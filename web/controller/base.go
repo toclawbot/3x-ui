@@ -5,9 +5,9 @@ package controller
 import (
 	"net/http"
 
-	"github.com/toclawbot/3x-ui/v2/logger"
-	"github.com/toclawbot/3x-ui/v2/web/locale"
-	"github.com/toclawbot/3x-ui/v2/web/session"
+	"github.com/mhsanaei/3x-ui/v2/logger"
+	"github.com/mhsanaei/3x-ui/v2/web/locale"
+	"github.com/mhsanaei/3x-ui/v2/web/session"
 
 	"github.com/gin-gonic/gin"
 )
