@@ -11,11 +11,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/mhsanaei/3x-ui/v2/database"
-	"github.com/mhsanaei/3x-ui/v2/database/model"
-	"github.com/mhsanaei/3x-ui/v2/logger"
-	"github.com/mhsanaei/3x-ui/v2/util/common"
-	"github.com/mhsanaei/3x-ui/v2/xray"
+	"github.com/toclawbot/3x-ui/v2/database"
+	"github.com/toclawbot/3x-ui/v2/database/model"
+	"github.com/toclawbot/3x-ui/v2/logger"
+	"github.com/toclawbot/3x-ui/v2/util/common"
+	"github.com/toclawbot/3x-ui/v2/xray"
 
 	"gorm.io/gorm"
 )
