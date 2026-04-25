@@ -24,8 +24,8 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: |
-            ${{ secrets.DOCKER_USERNAME }}/3x-ui
-            ghcr.io/${{ github.repository_owner }}/3x-ui
+            toclawbot/3x-ui
+            ghcr.io/toclawbot/3x-ui
           tags: |
             type=ref,event=branch
             type=ref,event=tag
@@ -58,7 +58,7 @@ jobs:
           context: .
           file: ./Dockerfile.optimized
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7,linux/arm/v6,linux/386
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
