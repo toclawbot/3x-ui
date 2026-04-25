@@ -1,0 +1,51 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+LICENSE
+CONTRIBUTING.md
+README.*
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+dist/
+*.log
+
+# Database
+db/
+database/
+
+# Config (if not needed in build)
+config/
+
+# Media
+media/
+
+# CI/CD
+.github/
+
+# Docker
+docker-compose.yml
+.env.example
+
+# Scripts (not needed in build)
+install.sh
+update.sh
+x-ui.sh
+
+# Test
+*_test.go

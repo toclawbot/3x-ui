@@ -1,0 +1,93 @@
+# ========================================================
+# Stage: Builder
+# ========================================================
+FROM golang:1.26-alpine AS builder
+
+# Install build dependencies
+RUN apk --no-cache add \
+  build-base \
+  gcc \
+  curl \
+  unzip \
+  git
+
+WORKDIR /app
+
+# Copy go mod files first for better caching
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build arguments
+ARG TARGETARCH
+ENV CGO_ENABLED=1
+ENV CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
+
+# Build with optimizations
+RUN go build -ldflags "-w -s -buildid=" -trimpath -o build/x-ui main.go
+
+# Run initialization script
+RUN ./DockerInit.sh "$TARGETARCH"
+
+# ========================================================
+# Stage: Final Image
+# ========================================================
+FROM alpine:3.20
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+  ca-certificates \
+  tzdata \
+  fail2ban \
+  bash \
+  curl \
+  openssl \
+  && rm -rf /var/cache/apk/*
+
+# Set timezone
+ENV TZ=Asia/Tehran
+
+WORKDIR /app
+
+# Copy artifacts from builder
+COPY --from=builder /app/build/ /app/
+COPY --from=builder /app/DockerEntrypoint.sh /app/
+COPY --from=builder /app/x-ui.sh /usr/bin/x-ui
+
+# Configure fail2ban (single layer)
+RUN rm -f /etc/fail2ban/jail.d/alpine-ssh.conf \
+  && cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local \
+  && sed -i "s/^\[ssh\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
+  && sed -i "s/^\[sshd\]$/&\nenabled = false/" /etc/fail2ban/jail.local \
+  && sed -i "s/#allowipv6 = auto/allowipv6 = auto/g" /etc/fail2ban/fail2ban.conf \
+  && chmod +x \
+  /app/DockerEntrypoint.sh \
+  /app/x-ui \
+  /usr/bin/x-ui
+
+# Security best practices
+RUN addgroup -g 1000 xui \
+  && adduser -D -u 1000 -G xui xui \
+  && chown -R xui:xui /app
+
+# Switch to non-root user
+USER xui
+
+# Expose port
+EXPOSE 2053
+
+# Volume for persistent data
+VOLUME [ "/etc/x-ui" ]
+
+# Environment variables
+ENV XUI_ENABLE_FAIL2BAN="true"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:2053/ || exit 1
+
+# Run
+CMD [ "./x-ui" ]
+ENTRYPOINT [ "/app/DockerEntrypoint.sh" ]
