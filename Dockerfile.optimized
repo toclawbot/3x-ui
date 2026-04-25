@@ -28,9 +28,6 @@ ENV CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 # Create build directory
 RUN mkdir -p build
 
-# Ensure dependencies are correct
-RUN go mod tidy
-
 # Build with optimizations
 RUN go build -ldflags "-w -s" -trimpath -o build/x-ui main.go
 
