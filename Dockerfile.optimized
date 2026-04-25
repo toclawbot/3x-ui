@@ -25,8 +25,11 @@ ARG TARGETARCH
 ENV CGO_ENABLED=1
 ENV CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 
+# Create build directory
+RUN mkdir -p build
+
 # Build with optimizations
-RUN go build -ldflags "-w -s -buildid=" -trimpath -o build/x-ui main.go
+RUN go build -ldflags "-w -s" -trimpath -o build/x-ui main.go
 
 # Run initialization script
 RUN ./DockerInit.sh "$TARGETARCH"
