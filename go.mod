@@ -2,6 +2,8 @@ module github.com/mhsanaei/3x-ui/v2
 
 go 1.26.2
 
+replace github.com/mhsanaei/3x-ui/v2 => ./
+
 require (
 	github.com/gin-contrib/gzip v1.2.6
 	github.com/gin-contrib/sessions v1.1.0
