@@ -1,0 +1,39 @@
+# Build artifacts
+build/
+*.log
+
+# Git
+.git/
+.gitignore
+README.md
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+LICENSE
+
+# Config examples
+.env.example
+
+# Scripts (keep only necessary ones)
+install.sh
+update.sh
+x-ui.sh
+x-ui.rc
+x-ui.service.*
+
+# Windows
+windows_files/
+
+# Unnecessary directories for build
+.github/
+CONTRIBUTING.md
+DOCKER_OPTIMIZATION.md
+WORKFLOW_AUDIT.md
