@@ -37,9 +37,11 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/3x-ui
             ghcr.io/toclawbot/3x-ui
           tags: |
-            type=ref,event=branch
-            type=ref,event=tag
             type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=tag
+            latest
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
